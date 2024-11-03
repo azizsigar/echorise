@@ -5,13 +5,15 @@ import Home from '../src/pages/Home'
 import Login from './pages/Login'
 import Register from '../src/pages/Register'
 import axios from 'axios'
+import Logo from './components/Logo'
 axios.defaults.baseURL='http://localhost:3000'
 axios.defaults.withCredentials=true
 
 function App() {
 
   return (
-  <div className='app'>
+    <div className='app'>
+      <Logo />
     <Navbar />
     <Routes>
       <Route path="/" element={<Home />} />
