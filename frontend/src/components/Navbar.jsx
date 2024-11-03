@@ -17,9 +17,6 @@ export default function Navbar() {
             <Link to="/echorise">Home</Link>
           </li>
           <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
             <Link to="/login">Login</Link>
           </li>
         </ul>
