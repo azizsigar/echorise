@@ -1,6 +1,7 @@
 import express from "express";
 import connectDB from "./config/db.js";
 import itemsRouter from "./routes/itemsRouter.js";
+import userRouter from "./routes/userRouter.js";
 import cors from "cors";
 
 
@@ -11,5 +12,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/items", itemsRouter);
+app.use("/api/auth", userRouter);   
 
 export default app;
