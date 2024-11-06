@@ -9,6 +9,7 @@ import Logo from "./components/Logo";
 import Services from "./components/Services.jsx";
 import Market from "./components/Market.jsx";
 import Solutions from "./components/Solutions.jsx";
+import PeoplesProfile from "./components/PeoplesProfile.jsx";
 axios.defaults.baseURL = "http://localhost:3000";
 axios.defaults.withCredentials = true;
 
@@ -17,6 +18,7 @@ function App() {
     <div className="app">
       <Logo />
       <Navbar />
+      <PeoplesProfile />
       <Routes>
         <Route path="/services" element={<Services />} />
         <Route path="/solutions" element={<Solutions />} />
