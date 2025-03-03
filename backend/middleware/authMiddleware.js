@@ -1,8 +1,32 @@
-// authMiddleware.js
-export const isAdmin = (req, res, next) => {
-  // Assuming the user role is stored in req.user after authentication
-  if (req.user && req.user.role === "admin") {
-    return next(); // User is admin, proceed to the next middleware/route handler
+//token checking jwt middleware for users crud
+
+import jwt from "jsonwebtoken";
+import User from "../models/userModel";
+import asyncHandler from "express-async-handler";
+
+const protect = asyncHandler(async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select("-password");
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401);
+      throw new Error("Not authorized, token failed");
+    }
   }
-  return res.status(403).json({ message: "Access denied: Admins only" });
-};
+
+  if (!token) {
+    res.status(401);
+    throw new Error("Not authorized, no token");
+  }
+});
+
+export default protect;
