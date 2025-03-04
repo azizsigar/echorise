@@ -7,3 +7,6 @@ export const registerUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   res.status(200).json({ message: "Delete user" });
 };
+export const getUser = async (req, res) => {
+  res.status(200).json({ message: "Get user" });
+};
