@@ -4,10 +4,11 @@ import {
   getAllItems,
   postItem,
 } from "../controllers/itemsController.js";
+import verifyToken from "../middleware/authMiddleware.js";
 const itemRouter = express.Router();
 
-itemRouter.get("/", getAllItems);
-itemRouter.post("/post", postItem);
-itemRouter.delete("/delete/:id", deleteItem);
+itemRouter.get("/", getAllItems); //for search button
+itemRouter.post("/post", verifyToken, postItem);
+itemRouter.delete("/delete/:id", verifyToken, deleteItem);
 
 export default itemRouter;
