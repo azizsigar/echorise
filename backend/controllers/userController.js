@@ -1,8 +1,7 @@
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
 import connection from "../config/db.js";
-
+import createToken from "../middleware/createToken.js";
 dotenv.config();
 
 // ✅ Register User
@@ -69,14 +68,8 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    // ✅ Generate JWT token (Valid for 1 hour)
     try {
-      const token = jwt.sign(
-        { id: user.id, username: user.username },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-      );
-
+      const token = createToken(user);
       res.status(200).json({
         message: "Login successful",
         userId: user.id,
@@ -94,7 +87,7 @@ export const loginUser = async (req, res) => {
 
 // ✅ Get User Details
 export const getUser = async (req, res) => {
-  const { id } = req.user; // Extract user ID from token middleware
+  const { id } = req.user;
 
   try {
     const query = "SELECT id, username FROM users WHERE id = ?";
@@ -112,7 +105,18 @@ export const getUser = async (req, res) => {
 
 // ✅ Delete User (Future Implementation)
 export const deleteUser = async (req, res) => {
-  res
-    .status(200)
-    .json({ message: "Delete user functionality to be implemented" });
+  const { id } = req.user; // Extract user ID from token middleware
+
+  try {
+    const query = "DELETE FROM users WHERE id = ?";
+    const [result] = await connection.execute(query, [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
 };
