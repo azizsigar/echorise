@@ -1,32 +1,26 @@
-//token checking jwt middleware for users crud
-
 import jwt from "jsonwebtoken";
-import User from "../models/userModel";
-import asyncHandler from "express-async-handler";
+import dotenv from "dotenv";
 
-const protect = asyncHandler(async (req, res, next) => {
-  let token;
+dotenv.config();
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
-      token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select("-password");
-      next();
-    } catch (error) {
-      console.error(error);
-      res.status(401);
-      throw new Error("Not authorized, token failed");
-    }
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ message: "No token provided or invalid format" });
   }
 
-  if (!token) {
-    res.status(401);
-    throw new Error("Not authorized, no token");
-  }
-});
+  const token = authHeader.split(" ")[1];
 
-export default protect;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Attach user data to request object
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+export default verifyToken;

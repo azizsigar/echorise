@@ -1,5 +1,5 @@
 import express from "express";
-
+import verifyToken from "../middleware/authMiddleware.js";
 import {
   deleteUser,
   loginUser,
@@ -9,9 +9,9 @@ import {
 
 const userRouter = express.Router();
 
-userRouter.get("/", getUser);
 userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
-userRouter.delete("/delete", deleteUser);
+userRouter.get("/", verifyToken, getUser);
+userRouter.delete("/delete", verifyToken, deleteUser);
 
 export default userRouter;
