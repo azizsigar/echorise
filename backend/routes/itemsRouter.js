@@ -1,4 +1,6 @@
 import express from "express";
+import { uploadMiddleware } from "../middleware/uploadMiddleware.js";
+
 import {
   deleteItem,
   getAllItems,
@@ -8,7 +10,7 @@ import verifyToken from "../middleware/authMiddleware.js";
 const itemRouter = express.Router();
 
 itemRouter.get("/", getAllItems); //for search button
-itemRouter.post("/post", verifyToken, postItem);
+itemRouter.post("/post", verifyToken, uploadMiddleware, postItem);
 itemRouter.delete("/delete/:id", verifyToken, deleteItem);
 
 export default itemRouter;
