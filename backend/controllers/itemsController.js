@@ -77,5 +77,37 @@ export const getAllItems = async (req, res) => {
 };
 
 export const deleteItem = async (req, res) => {
-  res.status(200).json({ message: "Delete item" });
+  try {
+    const itemId = req.params.id;
+    const userId = req.user?.id;
+
+    // İlgili item'ı bul
+    const [itemRows] = await connection.execute(
+      "SELECT * FROM items WHERE id = ?",
+      [itemId]
+    );
+
+    if (itemRows.length === 0) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    const item = itemRows[0];
+    // Kullanıcı item'ın sahibi mi kontrol et
+    if (item.user_id !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to delete this item" });
+    }
+
+    // Cloudinary'den sil
+    const publicId = item.image_url.split("/").pop().split(".")[0];
+    await cloudinary.uploader.destroy(`user_${userId}/${publicId}`);
+
+    // MySQL'den sil
+    await connection.execute("DELETE FROM items WHERE id = ?", [itemId]);
+
+    res.status(200).json({ message: "Item deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
