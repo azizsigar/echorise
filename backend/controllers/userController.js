@@ -87,18 +87,28 @@ export const loginUser = async (req, res) => {
 
 // ✅ Get User Details
 export const getUser = async (req, res) => {
-  const { id } = req.user;
+  const { id } = req.user; // Middleware'den gelen kullanıcı ID'si
 
   try {
-    const query = "SELECT id, username FROM users WHERE id = ?";
-    const [rows] = await connection.execute(query, [id]);
+    // Kullanıcı bilgilerini çek
+    const userQuery = "SELECT id, username, contact_me FROM users WHERE id = ?";
+    const [userRows] = await connection.execute(userQuery, [id]);
 
-    if (rows.length === 0) {
+    if (userRows.length === 0) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ user: rows[0] });
+    // Kullanıcıya ait itemleri çek
+    const itemsQuery =
+      "SELECT id, title, description, image_url, created_at FROM items WHERE user_id = ?";
+    const [itemsRows] = await connection.execute(itemsQuery, [id]);
+
+    res.status(200).json({
+      user: userRows[0], // Kullanıcı bilgisi
+      items: itemsRows, // Kullanıcıya ait itemler
+    });
   } catch (error) {
+    console.error("Error fetching user and items:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

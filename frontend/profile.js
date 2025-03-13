@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         <p>User ID: ${data.user.id}</p>
       `;
+    console.log(data);
   } catch (error) {
     console.error("Error fetching profile:", error);
 
