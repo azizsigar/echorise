@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     profileElement.innerHTML = `
         <h2>${data.user.username}'s Profile</h2>
         <p>User ID: ${data.user.id}</p>
+      <a href="postItem.html">post item</a>
     `;
 
     // Check if the user has posted items
@@ -52,15 +53,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Generate HTML for all items
       const itemsList = data.items
         .map((item) => {
-          // Here we're logging the item's title, description, and image_url
           console.log(item.title);
           console.log(item.description);
           console.log(item.image_url);
+          console.log(item.id);
 
           return `
-          <div class="item">
+          <div class="item" data-item-id="${item.id}">
             <h3>${item.title}</h3>
             <p>${item.description}</p>
+            <button class="delete-btn" data-id="${item.id}">Delete</button>
             <img src="${item.image_url}" alt="${
             item.title
           }" style="max-width: 300px; height: auto;" />
@@ -76,6 +78,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         <h3>Your Items:</h3>
         <div class="items-list">${itemsList}</div>
       `;
+
+      // Add event listeners for the delete buttons
+      const deleteButtons = document.querySelectorAll(".delete-btn");
+      deleteButtons.forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          const itemId = e.target.getAttribute("data-id");
+
+          try {
+            const deleteResponse = await fetch(
+              `http://localhost:3000/api/items/${itemId}`,
+              {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (!deleteResponse.ok) {
+              throw new Error("Failed to delete item");
+            }
+
+            // Successfully deleted, remove the item from the DOM
+            const itemElement = e.target.closest(".item");
+            itemElement.remove();
+            alert("Item deleted successfully.");
+          } catch (err) {
+            console.error("Error deleting item:", err);
+            alert("Failed to delete item.");
+          }
+        });
+      });
     } else {
       profileElement.innerHTML += "<p>You have no items posted.</p>";
     }

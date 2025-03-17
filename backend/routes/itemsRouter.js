@@ -11,6 +11,6 @@ const itemRouter = express.Router();
 
 itemRouter.get("/", getAllItems); //for search button
 itemRouter.post("/post", verifyToken, uploadMiddleware, postItem);
-itemRouter.delete("/delete/:id", verifyToken, deleteItem);
+itemRouter.delete("/:id", verifyToken, deleteItem);
 
 export default itemRouter;
