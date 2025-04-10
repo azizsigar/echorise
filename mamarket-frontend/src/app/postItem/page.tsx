@@ -7,22 +7,22 @@ export default function PostItemPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<File | null>(null);
+  const [itemType, setItemType] = useState("product"); // default: ürün
   const [responseMessage, setResponseMessage] = useState<string>("");
-  const router = useRouter();
-  const handleOnClick = async() => {
-    console.log("homomenu clicked");
 
-router.push("/"); // Redirect to home page
-}
+  const router = useRouter();
+
+  const handleOnClick = async () => {
+    router.push("/");
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!title || !description || !image) {
+    if (!title || !description || !image || !itemType) {
       setResponseMessage("All fields are required!");
       return;
     }
-
-
 
     let token;
     try {
@@ -42,6 +42,7 @@ router.push("/"); // Redirect to home page
     formData.append("title", title);
     formData.append("description", description);
     formData.append("image", image);
+    formData.append("type", itemType); // <-- yeni alan
 
     try {
       const response = await fetch("http://localhost:3000/api/items/post", {
@@ -56,7 +57,7 @@ router.push("/"); // Redirect to home page
 
       if (response.ok) {
         setResponseMessage("Item posted successfully!");
-        router.push("/profile"); // Redirect to profile after posting
+        router.push("/profile");
       } else {
         setResponseMessage(`Error: ${result.error || "Something went wrong"}`);
       }
@@ -68,7 +69,22 @@ router.push("/"); // Redirect to home page
   return (
     <div className="p-6">
       <h1>Post Item</h1>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-4">
+        <div>
+          <label htmlFor="type">Item Type:</label>
+          <select
+            id="type"
+            name="type"
+            value={itemType}
+            onChange={(e) => setItemType(e.target.value)}
+            required
+            className="border p-2"
+          >
+            <option value="product">Ürün</option>
+            <option value="service">Hizmet</option>
+          </select>
+        </div>
+
         <div>
           <label htmlFor="title">Title:</label>
           <input
@@ -78,8 +94,10 @@ router.push("/"); // Redirect to home page
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
+            className="border p-2"
           />
         </div>
+
         <div>
           <label htmlFor="description">Description:</label>
           <textarea
@@ -88,8 +106,10 @@ router.push("/"); // Redirect to home page
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
+            className="border p-2 w-full"
           />
         </div>
+
         <div>
           <label htmlFor="image">Upload Image:</label>
           <input
@@ -99,19 +119,25 @@ router.push("/"); // Redirect to home page
             accept="image/*"
             onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
             required
+            className="border p-2"
           />
         </div>
-        <button type="submit">Post Item</button>
-        <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          type="button"
-          onClick={handleOnClick}
-        >
-          Home Menu
-        </button>
+
+        <div className="flex gap-4">
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Post Item
+          </button>
+          <button
+            type="button"
+            onClick={handleOnClick}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Home Menu
+          </button>
+        </div>
       </form>
 
-      <div>{responseMessage && <p>{responseMessage}</p>}</div>
+      {responseMessage && <p className="mt-4 text-red-500">{responseMessage}</p>}
     </div>
   );
 }
