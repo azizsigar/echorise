@@ -15,9 +15,9 @@ export const postItem = async (req, res) => {
     console.log("Uploaded File:", req.file); // Multer dosyayı düzgün aldı mı?
 
     const userId = req.user?.id; // Token'dan gelen kullanıcı ID
-    const { title, description } = req.body;
+    const { title, description, type } = req.body;
 
-    if (!title || !description) {
+    if (!title || !description || !type) {
       return res
         .status(400)
         .json({ error: "Title and description are required" });
@@ -50,8 +50,8 @@ export const postItem = async (req, res) => {
 
     // MySQL'e kaydetme
     const [rows] = await connection.execute(
-      "INSERT INTO items (user_id, title, description, image_url) VALUES (?, ?, ?, ?)",
-      [userId, title, description, result.secure_url]
+      "INSERT INTO items (user_id, title, description, image_url,type) VALUES (?, ?, ?, ?, ?)",
+      [userId, title, description, result.secure_url, type]
     );
 
     res
