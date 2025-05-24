@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Echorise Digital Solutions - Gazete Stili</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Merriweather+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Echorise Digital Solutions</h1>
+      <p>
+        We help offline businesses go digital. We increase visibility and brand
+        awareness for companies.
+      </p>
+    </header>
+
+    <section class="single-column">
+      <p>
+        We offer custom digital solutions to help businesses grow. Our services
+        cover a wide range of digital solutions designed to help businesses grow
+        and succeed online. We specialize in transforming offline companies into
+        strong digital brands and boosting the reach of those already online.
+      </p>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+
+      <a
+        class="project-title"
+        data-target="functional-software"
+        href="javascript:void(0);"
+      >
+        Functional Software Development
+      </a>
+      <div
+        class="project-details"
+        id="functional-software"
+        style="display: none"
+      >
+        <p>
+          Developed an interactive and user-friendly math quiz app aimed at
+          improving quick calculation skills with dynamic problem generation.
+        </p>
+        <p>
+          Visit site:
+          <a
+            href="https://azizsigar.github.io/randomquickmath/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >https://azizsigar.github.io/randomquickmath/</a
+          >
+        </p>
+      </div>
+
+      <a
+        class="project-title"
+        data-target="personal-brand"
+        href="javascript:void(0);"
+      >
+        Portfolio Site
+      </a>
+      <div class="project-details" id="personal-brand" style="display: none">
+        <p>
+          Built a responsive, multi-language site for translation services
+          focusing on clarity and ease of contact.
+        </p>
+        <p>
+          Visit site:
+          <a
+            href="https://dittataalenwerk.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >https://dittataalenwerk.com/</a
+          >
+        </p>
+      </div>
+
+      <a
+        class="project-title"
+        data-target="portfolio-site"
+        href="javascript:void(0);"
+      >
+        Personal Brand Awareness
+      </a>
+      <div class="project-details" id="portfolio-site" style="display: none">
+        <p>
+          Created a personal portfolio showcasing tailored software developments
+          and consulting services.
+        </p>
+        <p>
+          Visit site:
+          <a
+            href="https://azizg.site/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >https://azizg.site/</a
+          >
+        </p>
+      </div>
+
+      <a
+        class="project-title"
+        data-target="custom-software"
+        href="javascript:void(0);"
+      >
+        Custom Software Solutions
+      </a>
+      <div class="project-details" id="custom-software" style="display: none">
+        <ul>
+          <li>
+            Development of custom closed-loop software systems tailored to
+            client needs
+          </li>
+        </ul>
+      </div>
+
+      <a class="project-title" data-target="seo" href="javascript:void(0);">
+        SEO Services
+      </a>
+      <div class="project-details" id="seo" style="display: none">
+        <ul>
+          <li>
+            SEO optimization for websites to improve search engine rankings and
+            traffic
+          </li>
+        </ul>
+      </div>
+
+      <a
+        class="project-title"
+        data-target="social-media"
+        href="javascript:void(0);"
+      >
+        Social Media Services
+      </a>
+      <div class="project-details" id="social-media" style="display: none">
+        <ul>
+          <li>
+            Social media and business visibility management to boost online
+            presence
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <p>KVK: 8989289719873</p>
+      <p>© 2025 Rotterdam</p>
+    </footer>
+
+    <script>
+      document.querySelectorAll("a.project-title").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute("data-target");
+          const details = document.getElementById(targetId);
+          if (details.style.display === "block") {
+            details.style.display = "none";
+          } else {
+            // Kapat diğerlerini
+            document
+              .querySelectorAll(".project-details")
+              .forEach((d) => (d.style.display = "none"));
+            details.style.display = "block";
+            details.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
