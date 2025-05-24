@@ -2,7 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- seo -->
+    <meta
+      property="og:title"
+      content="Echorise Digital Solutions | Software Company in the Netherlands"
+    />
+    <meta
+      property="og:description"
+      content="Based in Rotterdam, Echorise provides tailor-made web and digital solutions to grow your business online."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://echorise.azizg.site/" />
+    <meta
+      property="og:image"
+      content="https://echorise.azizg.site/images/og-image.jpg"
+    />
+
+    <title>Echorise Digital Solutions | Custom Software & Digital Growth</title>
+    <meta
+      name="description"
+      content="Echorise Digital Solutions is a Rotterdam-based software company offering web development, SEO, social media and digital transformation services for businesses in the Netherlands."
+    />
+    <meta
+      name="keywords"
+      content="software company Rotterdam, web development Netherlands, SEO services Holland, digital transformation, social media management, yazılım şirketi Hollanda"
+    />
+    <meta name="author" content="Echorise Digital Solutions" />
+
+    <meta name="geo.region" content="NL-ZH" />
+    <meta name="geo.placename" content="Rotterdam" />
+    <meta name="geo.position" content="51.9225;4.47917" />
+    <meta name="ICBM" content="51.9225, 4.47917" />
+
     <title>Echorise Digital Solutions - Gazete Stili</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Merriweather+Sans&display=swap"
@@ -150,12 +184,18 @@
     </section>
 
     <footer>
-      <p>KVK: 8989289719873</p>
-      <p>© 2025 Rotterdam</p>
+      <p><a href="mailto:aazizsigar@gmail.com">Contact</a></p>
+      <p><strong>KVK:</strong> 8989289719873</p>
+      <p>
+        Rotterdam, Netherlands<br />
+        <p>© <span id="year"></span> Echorise Digital Solutions</p>
+      </p>
     </footer>
 
     <script>
       document.querySelectorAll("a.project-title").forEach((link) => {
+          document.getElementById('year').textContent = new Date().getFullYear();
+
         link.addEventListener("click", (e) => {
           e.preventDefault();
           const targetId = link.getAttribute("data-target");
