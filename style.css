@@ -11,8 +11,6 @@ body {
     opacity: 0;
   animation: fadeIn 1s forwards;
 }
-
-
 @keyframes fadeIn {
   to {
     opacity: 1;
@@ -69,7 +67,6 @@ a.project-title:hover {
   color: #333;
   border-left: 3px solid #000;
   padding-left: 1rem;
-  background: #f9f9f9;
 }
 
 footer {
